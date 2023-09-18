@@ -144,7 +144,12 @@ public abstract class OKXWebSocketApiBaseClient : WebSocketApiClient
         {
             log.Write(LogLevel.Warning, $"Query failed:  {token.ToString()}");
             callResult = new CallResult<T>(new ServerError(cd, token.ToString()));
-            return false;
+            return true;
+        }
+        else
+        {
+            var desResult = Deserialize<T>(data);
+            callResult = new CallResult<T>(desResult.Data);
         }
 
         return false;

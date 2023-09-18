@@ -178,6 +178,8 @@ public class OkxBaseSocketRequestArg
     public string ordType { get; set; }
     [JsonProperty("sz")]
     public string sz { get; set; }
+    [JsonProperty("px")]
+    public decimal Price { get; set; }
 
 }
 public class OkxBaseSocketResponse

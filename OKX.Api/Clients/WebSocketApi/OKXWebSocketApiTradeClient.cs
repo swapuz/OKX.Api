@@ -95,16 +95,17 @@ public class OKXWebSocketApiTradeClient
         bool? reduceOnly = null)
     {
         string operation = "order";
-
+        var sd = JsonConvert.SerializeObject(side, new OrderSideConverter(false));
         var args = new OkxBaseSocketRequestArg
         { 
-            tag = "forkTest",
+            tag = "forkTest;"+sd+";"+DateTime.UtcNow.Ticks,
             instId = symbol,
             tdMode = JsonConvert.SerializeObject(tradeMode, new TradeModeConverter(false)),
-            side = JsonConvert.SerializeObject(side, new OrderSideConverter(false)),
+            side = sd,
             posSide = JsonConvert.SerializeObject(positionSide, new PositionSideConverter(false)),
             ordType = JsonConvert.SerializeObject(type, new OrderTypeConverter(false)),
             sz = quantity.ToString(CultureInfo.InvariantCulture),
+            Price = price.Value
         };
 
         var request = new OkxBaseSocketRequest(operation, new List<OkxBaseSocketRequestArg> { args });
@@ -116,7 +117,7 @@ public class OKXWebSocketApiTradeClient
             return result;
         }
         var errCode = result.Error?.Code ?? 0;
-        var errMsg = result.Error?.Message ?? "empty";
+        var errMsg = result.Error?.Data?.ToString() ?? result.Error?.Message;        
         return result.AsError<OkxBaseSocketResponse<OkxBaseSocketResponse>>(new ServerError(errCode, errMsg, null));
     }
 

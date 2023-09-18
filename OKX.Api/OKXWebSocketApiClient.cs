@@ -100,6 +100,7 @@ public class OKXWebSocketApiClient : OKXWebSocketApiBaseClient
             var authProvider = AuthenticationProvider  as OkxAuthenticationProvider;
 
             base.ClientOptions.ApiCredentials = new OkxApiCredentials(authProvider.GetApiKey(), authProvider.GetApiSecret(), authProvider.GetPassPhrase());
+            base.ClientOptions.ResponseTimeout = TimeSpan.FromSeconds(10);
         }
         return QueryAsync<T>(url ,request, authenticated);
     }
