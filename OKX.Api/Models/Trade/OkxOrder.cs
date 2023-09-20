@@ -42,7 +42,7 @@ public class OkxOrder
     /// Order tag. Used for Broker Id
     /// </summary>
     [JsonProperty("tag")]
-    internal string Tag { get; set; }
+    public string Tag { get; set; }
 
     /// <summary>
     /// Price

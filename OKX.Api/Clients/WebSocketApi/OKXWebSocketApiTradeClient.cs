@@ -98,7 +98,7 @@ public class OKXWebSocketApiTradeClient
         var sd = JsonConvert.SerializeObject(side, new OrderSideConverter(false));
         var args = new OkxBaseSocketRequestArg
         { 
-            tag = "forkTest;"+sd+";"+DateTime.UtcNow.Ticks,
+            tag = "fork"+DateTime.UtcNow.ToString("ssmmhhdd"),
             instId = symbol,
             tdMode = JsonConvert.SerializeObject(tradeMode, new TradeModeConverter(false)),
             side = sd,
@@ -118,7 +118,7 @@ public class OKXWebSocketApiTradeClient
         }
         var errCode = result.Error?.Code ?? 0;
         var errMsg = result.Error?.Data?.ToString() ?? result.Error?.Message;        
-        return result.AsError<OkxBaseSocketResponse<OkxBaseSocketResponse>>(new ServerError(errCode, errMsg, null));
+        return result.AsError<OkxBaseSocketResponse<OkxBaseSocketResponse>>(new ServerError(errCode, errMsg, args.tag));
     }
 
     // TODO: WS / Place order
